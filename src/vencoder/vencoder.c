@@ -24,14 +24,14 @@ extern "C" {
 #include "FrameBufferManager.h"
 #include "venc_device.h"
 #include "EncAdapter.h"
-
+#include "libcedar_plugin_venc.h"
 
 #define FRAME_BUFFER_NUM 4
 
 typedef struct VencContext
 {
    VENC_DEVICE*         pVEncDevice;
-   void*                pEncoderHandle;
+   H264Ctx *            pEncoderHandle;
    FrameBufferManager*  pFBM;
    VencBaseConfig    	baseConfig;
    unsigned int		    nFrameBufferNum;
@@ -139,7 +139,10 @@ int VideoEncInit(VideoEncoder* pEncoder, VencBaseConfig* pConfig)
 			VeInitEncoderPerformance(0);
 			logd("VeInitEncoderPerformance");
 		}
-	}
+    } 
+    else if (venc_ctx->ICVersion == 0x1625) {
+        venc_ctx->pEncoderHandle->rMePara.deblk_to_dram = 1;
+    }
 
 	logd("(f:%s, l:%d)", __FUNCTION__, __LINE__);
 
