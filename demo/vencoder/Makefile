@@ -1,13 +1,20 @@
-
 CC=arm-linux-gnueabihf-gcc
 
-all:
-	$(CC) VideoTest.c \
-			-L/usr/local/lib/full-package-name/ \
-			-lcedar_vencoder -lcedar_common -lcedar_base\
-			-I../../src/base/include/ \
-			-I../../src/vencoder/include/ \
+CFLAGS := -O2 -g -Wall
+
+LIBCEDAR='cedarx'
+PKGCONFIG := $(shell pkg-config --help 2> /dev/null)
+ifndef PKGCONFIG
+    $(error "pkg-config is not available please install pkg-config")
+endif
+CFLAGS += $(shell pkg-config --cflags $(LIBCEDAR))
+LDFLAGS += $(shell pkg-config --libs $(LIBCEDAR))
+
+all: venc
+
+venc:
+	$(CC) VideoTest.c $(CFLAGS) $(LDFLAGS) -o venc
 
 clean:
-	rm a.out
+	rm -rf venc
 

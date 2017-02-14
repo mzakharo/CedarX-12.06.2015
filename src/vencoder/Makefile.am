@@ -2,6 +2,8 @@
 include $(top_srcdir)/Makefile.am.inc
 
 pkglib_LTLIBRARIES = libcedar_vencoder.la
+
+pkginclude_HEADERS = include/vencoder.h
  
 libcedar_vencoder_la_SOURCES =  BitstreamManager.c \
 							   	EncAdapter.c \

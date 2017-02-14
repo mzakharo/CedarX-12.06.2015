@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@/cedarx
+includedir=@includedir@/cedarx
+ 
+Name: @PACKAGE_NAME@
+Description: CedarX library
+Version: @PACKAGE_VERSION@
+Libs: -L${libdir} -l cedar_vencoder -lcedar_common -lcedar_base
+Cflags: -I${includedir}/

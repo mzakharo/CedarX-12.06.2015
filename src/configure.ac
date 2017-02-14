@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])
+AC_INIT([cedarx], [0.1], [BUG-REPORT-ADDRESS])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
@@ -20,6 +20,8 @@ AC_PROG_MAKE_SET
 AC_PROG_RANLIB
 AM_PROG_AR
 AC_PROG_LIBTOOL
+PKG_PROG_PKG_CONFIG
+PKG_INSTALLDIR
 
 # Checks for libraries.
 
@@ -51,5 +53,6 @@ AC_CONFIG_FILES([Makefile
                  plugin/vdecoder/mjpeg/Makefile
                  plugin/vdecoder/mpeg2/Makefile
                  plugin/vdecoder/mpeg4/Makefile
+				 cedarx.pc
 				 ])
 AC_OUTPUT
