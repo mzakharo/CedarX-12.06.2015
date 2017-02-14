@@ -29,7 +29,7 @@ int yu12_nv12(unsigned int width, unsigned int height, unsigned char *addr_uv, u
 	return 0;
 }
 
-int main()
+int main(const int argc, const char **argv)
 {
 	VencBaseConfig baseConfig;
 	VencAllocateBufferParam bufferParam;
@@ -46,11 +46,19 @@ int main()
 	
 
 	VencROIConfig sRoiConfig[4];
+	if (argc != 5)
+	{
+		printf("Usage: %s <infile> <width> <height> <outfile>\n", argv[0]);
+		return EXIT_FAILURE;
+	}
+	int width = atoi(argv[2]);
+	int height = atoi(argv[3]);
 
-	src_width = 1920;
-	src_height = 1080;
-	dst_width = 1920;
-	dst_height = 1080;
+
+	src_width = width;
+	src_height = height;
+	dst_width = width;
+	dst_height = height;
 
 	// roi
 	sRoiConfig[0].bEnable = 1;
@@ -162,18 +170,27 @@ int main()
 
 	if(codecType == VENC_CODEC_H264)
 	{
-		in_file = fopen("/root/mnt/repos/codec-lte/demo/data/stream/1080p.yuv", "r");
-		if(in_file == NULL)
+
+		in_file = stdin;
+		if (strcmp(argv[1], "-") != 0)
 		{
-			loge("open in_file fail\n");
-			return -1;
+			in_file = fopen(argv[1], "r");
+			if(in_file == NULL)
+			{
+				loge("open in_file fail\n");
+				return -1;
+			}
 		}
-		
-		out_file = fopen("./1080p.264", "wb");
-		if(out_file == NULL)
+
+		out_file = stdout;
+		if (strcmp(argv[4], "-") != 0)
 		{
-			loge("open out_file fail\n");
-			return -1;
+			out_file = fopen(argv[4], "wb");
+			if(out_file == NULL)
+			{
+				loge("open out_file fail\n");
+				return -1;
+			}
 		}
 	}
 	else
@@ -259,6 +276,7 @@ int main()
 
 	AllocInputBuffer(pVideoEnc, &bufferParam);
 
+#if 0
 	if(baseConfig.eInputFormat == VENC_PIXEL_YUV420SP)
 	{
 		uv_tmp_buffer = (unsigned char*)malloc(baseConfig.nInputWidth*baseConfig.nInputHeight/2);
@@ -268,8 +286,9 @@ int main()
 			return -1;
 		}
 	}
+#endif
 	
-	while(testNumber > 0)
+	while(1)
 	{
 		GetOneAllocInputBuffer(pVideoEnc, &inputBuffer);
 		{
@@ -280,16 +299,16 @@ int main()
 
 			if((size1!= baseConfig.nInputWidth*baseConfig.nInputHeight) || (size2!= baseConfig.nInputWidth*baseConfig.nInputHeight/2))
 			{
-				fseek(in_file, 0L, SEEK_SET);
-				size1 = fread(inputBuffer.pAddrVirY, 1, baseConfig.nInputWidth*baseConfig.nInputHeight, in_file);
-				size2 = fread(inputBuffer.pAddrVirC, 1, baseConfig.nInputWidth*baseConfig.nInputHeight/2, in_file);
+				break;
 			}
 
 			
+#if 0
 			if(baseConfig.eInputFormat == VENC_PIXEL_YUV420SP)
 			{
 				yu12_nv12(baseConfig.nInputWidth, baseConfig.nInputHeight, inputBuffer.pAddrVirC, uv_tmp_buffer);
 			}
+#endif
 		}
 		
 		inputBuffer.bEnableCorp = 0;
