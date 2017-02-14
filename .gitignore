@@ -2,3 +2,6 @@ tags
 *.264
 venc
 *.pc
+configure
+configtest.*
+confdefs.h
