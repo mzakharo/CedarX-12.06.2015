@@ -31,7 +31,7 @@ extern "C" {
 typedef struct VencContext
 {
    VENC_DEVICE*         pVEncDevice;
-   H264Ctx *            pEncoderHandle;
+   void *               pEncoderHandle;
    FrameBufferManager*  pFBM;
    VencBaseConfig    	baseConfig;
    unsigned int		    nFrameBufferNum;
@@ -140,8 +140,9 @@ int VideoEncInit(VideoEncoder* pEncoder, VencBaseConfig* pConfig)
 			logd("VeInitEncoderPerformance");
 		}
     } 
-    else if (venc_ctx->ICVersion == 0x1625) {
-        venc_ctx->pEncoderHandle->rMePara.deblk_to_dram = 1;
+    else if (venc_ctx->ICVersion == 0x1625 && venc_ctx->codecType == VENC_CODEC_H264) {
+        H264Ctx  * h264ctx = (H264Ctx *) venc_ctx->pEncoderHandle;
+        h264ctx->rMePara.deblk_to_dram = 1;
     }
 
 	logd("(f:%s, l:%d)", __FUNCTION__, __LINE__);

@@ -126,8 +126,7 @@ int main(const int argc, const char **argv)
 	h264Param.sQPRange.nMaxqp = 40;
 
 
-	int codecType = VENC_CODEC_H264;
-	int testNumber = 70;
+	int testNumber = -1;
 
 	strcpy((char*)exifinfo.CameraMake,		"allwinner make test");
 	strcpy((char*)exifinfo.CameraModel,		"allwinner model test");
@@ -170,47 +169,34 @@ int main(const int argc, const char **argv)
 	FILE *in_file = NULL;
 	FILE *out_file = NULL;
 
-	if(codecType == VENC_CODEC_H264)
-	{
 
-		in_file = stdin;
-		if (strcmp(argv[1], "-") != 0)
-		{
-			in_file = fopen(argv[1], "r");
-			if(in_file == NULL)
-			{
-				loge("open in_file fail\n");
-				return -1;
-			}
-		}
+    in_file = stdin;
+    if (strcmp(argv[1], "-") != 0)
+    {
+        in_file = fopen(argv[1], "r");
+        if(in_file == NULL)
+        {
+            loge("open in_file fail\n");
+            return -1;
+        }
+    }
 
-		out_file = stdout;
-		if (strcmp(argv[4], "-") != 0)
-		{
-			out_file = fopen(argv[4], "wb");
-			if(out_file == NULL)
-			{
-				loge("open out_file fail\n");
-				return -1;
-			}
-		}
-	}
-	else
-	{
-		in_file = fopen("/data/camera/720p-30zhen.yuv", "r");
-		if(in_file == NULL)
-		{
-			loge("open in_file fail\n");
-			return -1;
-		}
-		
-		out_file = fopen("/data/camera/test.jpg", "wb");
-		if(out_file == NULL)
-		{
-			loge("open out_file fail\n");
-			return -1;
-		}
-	}
+    out_file = stdout;
+    if (strcmp(argv[4], "-") != 0)
+    {
+        out_file = fopen(argv[4], "wb");
+        if(out_file == NULL)
+        {
+            loge("open out_file fail\n");
+            return -1;
+        }
+    }
+    char * dot = strchr(argv[4], '.');
+	int codecType = VENC_CODEC_H264;
+    if (dot && !strcmp(dot,".jpeg")){
+	    codecType = VENC_CODEC_JPEG;
+    }
+	
 
 	memset(&baseConfig, 0 ,sizeof(VencBaseConfig));
 	memset(&bufferParam, 0 ,sizeof(VencAllocateBufferParam));
@@ -290,7 +276,7 @@ int main(const int argc, const char **argv)
 	}
 #endif
 	
-	while(1)
+	while(testNumber)
 	{
 		GetOneAllocInputBuffer(pVideoEnc, &inputBuffer);
 		{
@@ -354,7 +340,8 @@ int main(const int argc, const char **argv)
 			FreeOneBitStreamFrame(pVideoEnc, &outputBuffer);
 		}
 
-		testNumber--;
+        if (testNumber > 0)
+    		testNumber--;
 	}
 
 	fclose(out_file);
