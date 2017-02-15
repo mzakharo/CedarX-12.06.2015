@@ -12,8 +12,8 @@ LDFLAGS += $(shell pkg-config --libs $(LIBCEDAR))
 
 all: venc
 
-venc:
-	$(CC) VideoTest.c $(CFLAGS) $(LDFLAGS) -o venc
+venc: VideoTest.c
+	$(CC) $< $(CFLAGS) $(LDFLAGS) -o $@
 
 clean:
 	rm -rf venc

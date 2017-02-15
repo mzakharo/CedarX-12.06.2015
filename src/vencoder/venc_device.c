@@ -82,7 +82,7 @@ int VEncoderRegister(VENC_CODEC_TYPE type, char *desc, VENC_DEVICE *device)
     gVEncoderList.size++;
     
     pthread_mutex_unlock(&gVEncoderList.mutex);
-    logw("register encoder: '%x:%s' success.", type, desc);
+    logi("register encoder: '%x:%s' success.", type, desc);
     return 0;
 }
 

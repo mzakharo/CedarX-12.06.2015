@@ -2,10 +2,6 @@
 include $(top_srcdir)/Makefile.am.inc
 
 pkglib_LTLIBRARIES = libcedar_base.la
-pkginclude_HEADERS = include/log.h \
-					 include/CdxConfig.h \
-					 include/CdxUtils.h \
-					 include/CdxTypes.h
 
 libcedar_base_la_SOURCES = AwPool.c CdxQueue.c CdxList.c CdxUtils.c 
 

@@ -1,9 +1,11 @@
-#include "log.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "vencoder.h"
 #include <time.h>
+#define loge(...) fprintf(stderr,"err: " __VA_ARGS__)
+#define logd(...) fprintf(stderr,"dbg: " __VA_ARGS__)
+#define logi(...) fprintf(stderr,"inf: " __VA_ARGS__)
 
 int yu12_nv12(unsigned int width, unsigned int height, unsigned char *addr_uv, unsigned char *addr_tmp_uv)
 {
@@ -48,7 +50,7 @@ int main(const int argc, const char **argv)
 	VencROIConfig sRoiConfig[4];
 	if (argc != 5)
 	{
-		printf("Usage: %s <infile> <width> <height> <outfile>\n", argv[0]);
+		loge("Usage: %s <infile> <width> <height> <outfile>\n", argv[0]);
 		return EXIT_FAILURE;
 	}
 	int width = atoi(argv[2]);
@@ -355,7 +357,6 @@ int main(const int argc, const char **argv)
 		testNumber--;
 	}
 
-out:	
 	fclose(out_file);
 	fclose(in_file);
 	if(uv_tmp_buffer)

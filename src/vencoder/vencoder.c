@@ -339,7 +339,7 @@ int VideoEncodeOneFrame(VideoEncoder* pEncoder)
 		}
 		else
 		{
-			logw("venc_ctx->curEncInputbuffer.pAddrPhyY: %p, maybe not right", venc_ctx->curEncInputbuffer.pAddrPhyY);
+			logv("venc_ctx->curEncInputbuffer.pAddrPhyY: %p, maybe not right", venc_ctx->curEncInputbuffer.pAddrPhyY);
 		}
 
 		if((unsigned long)venc_ctx->curEncInputbuffer.pAddrPhyC >= 0x40000000)

@@ -22,7 +22,7 @@
 #include <CdxUtils.h>
 
 #ifndef LOG_TAG
-#define LOG_TAG "awplayer"
+#define LOG_TAG "CedarX"
 #endif
 
 #if CONFIG_OS == OPTION_OS_ANDROID
@@ -48,7 +48,7 @@
     #define LOG_LEVEL_DEBUG     "debug  "
     
     #define AWLOG(level, fmt, arg...)  \
-        printf("%s: %s <%s:%u>: "fmt"\n", level, LOG_TAG, __FILE__, __LINE__, ##arg)
+        fprintf(stderr, "%s: %s <%s:%u>: "fmt"\n", level, LOG_TAG, __FILE__, __LINE__, ##arg)
 #else
     #error "invalid configuration of os."
 #endif
@@ -59,10 +59,22 @@
         CdxBTDump(); \
     } while (0)
     
+#define logi(fmt, arg...) AWLOG(LOG_LEVEL_INFO, fmt, ##arg)
+#if CONFIG_LOG_LEVEL >= OPTION_LOG_LEVEL_WARNING
 #define logw(fmt, arg...) AWLOG(LOG_LEVEL_WARNING, fmt, ##arg)
-#define logi(fmt, arg...)
-#define logd(fmt, arg...) AWLOG(LOG_LEVEL_WARNING, fmt, ##arg)
+#else
+#define logw(fmt, arg...) 
+#endif
+#if CONFIG_LOG_LEVEL >= OPTION_LOG_LEVEL_DEFAULT
+#define logd(fmt, arg...) AWLOG(LOG_LEVEL_DEBUG, fmt, ##arg)
+#else
+#define logd(fmt, arg...) 
+#endif
+#if CONFIG_LOG_LEVEL >= OPTION_LOG_LEVEL_DETAIL
+#define logv(fmt, arg...) AWLOG(LOG_LEVEL_VERBOSE, fmt, ##arg)
+#else
 #define logv(fmt, arg...)
+#endif
 
 #define CEDARX_UNUSE(param) (void)param
 
