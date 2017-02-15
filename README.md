@@ -14,7 +14,7 @@ sudo make install
 ```
 Install H.264/JPEG Encoder Binary
 ```
-install $WORKSPACE/binary/libcedar_plugin_venc.so $PREFIX/lib/cedarx/
+sudo install $WORKSPACE/binary/libcedar_plugin_venc.so $PREFIX/lib/cedarx/
 ```
 
 Add CedarX library LD Path
